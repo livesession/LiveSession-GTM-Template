@@ -13,7 +13,8 @@ ___INFO___
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
-  "displayName": "LiveSession Tag",
+  "displayName": "LiveSession",
+  "categories": ["SESSION_RECORDING","ANALYTICS"],
   "brand": {
     "id": "brand_dummy",
     "displayName": "",

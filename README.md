@@ -1,1 +1,1 @@
-# LiveSession-GTM-Template
+# LiveSession Google Tag Manager Template

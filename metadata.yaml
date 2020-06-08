@@ -1,5 +1,5 @@
 homepage: "https://livesession.io/",
-documentation: "https://livesession.io/help/",
+documentation: "https://github.com/livesession/LiveSession-GTM-Template",
 versions:
   - sha: add_sha_key_commit_from_git
     changeNotes: Add LiveSession GTM Template
