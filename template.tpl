@@ -46,18 +46,15 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 const createArgumentsQueue = require('createArgumentsQueue');
 const injectScript = require('injectScript');
 const setInWindow = require('setInWindow');
-const logToConsole = require('logToConsole');
 
 const trackID = data.trackingId;
 
-const __ls = createArgumentsQueue('__ls', '__ls.f');
-setInWindow('__ls', __ls);
-
+const __ls = createArgumentsQueue('__ls', '__ls.store');
+setInWindow('__ls.v', '1.0', false);
 __ls('init', trackID);
 __ls("newPageView"); 
 
 const url = 'https://cdn.livesession.io/track.js';
-
 injectScript(url,data.gtmOnSuccess, data.gtmOnFailure, url);
 
 
@@ -138,7 +135,7 @@ ___WEB_PERMISSIONS___
                 "mapValue": [
                   {
                     "type": 1,
-                    "string": "__ls.f"
+                    "string": "__ls.store"
                   },
                   {
                     "type": 8,
@@ -150,7 +147,46 @@ ___WEB_PERMISSIONS___
                   },
                   {
                     "type": 8,
+                    "boolean": false
+                  }
+                ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "__ls.v"
+                  },
+                  {
+                    "type": 8,
                     "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
                   }
                 ]
               }
@@ -189,24 +225,6 @@ ___WEB_PERMISSIONS___
       "isEditedByUser": true
     },
     "isRequired": true
-  },
-  {
-    "instance": {
-      "key": {
-        "publicId": "logging",
-        "versionId": "1"
-      },
-      "param": [
-        {
-          "key": "environments",
-          "value": {
-            "type": 1,
-            "string": "debug"
-          }
-        }
-      ]
-    },
-    "isRequired": true
   }
 ]
 
@@ -241,7 +259,7 @@ scenarios:
     // Call runCode to run the template's code.
     runCode(mockData);
     assertApi('injectScript').wasCalled();
-    assertApi('createArgumentsQueue').wasCalledWith('__ls', '__ls.f');
+    assertApi('createArgumentsQueue').wasCalledWith('__ls', '__ls.store');
 
     // Verify that the tag finished successfully.
     assertApi('gtmOnSuccess').wasCalled();
@@ -249,6 +267,6 @@ scenarios:
 
 ___NOTES___
 
-Created on 8.06.2020, 17:31:20
+Created on 8.06.2020, 20:22:38
 
 
