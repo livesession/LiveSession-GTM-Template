@@ -45,28 +45,20 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
 const createArgumentsQueue = require('createArgumentsQueue');
 const injectScript = require('injectScript');
-const createQueue = require('createQueue');
+const setInWindow = require('setInWindow');
+const logToConsole = require('logToConsole');
+
 const trackID = data.trackingId;
-const queryPermission = require('queryPermission');
 
-const __ls = createArgumentsQueue('__ls', 'dataLayer');
+const __ls = createArgumentsQueue('__ls', '__ls.f');
+setInWindow('__ls', __ls);
 
-const initLiveSession = () => {
-  __ls('init', trackID);
-  __ls("newPageView"); 
- return  data.gtmOnSuccess();
-};
-
+__ls('init', trackID);
+__ls("newPageView"); 
 
 const url = 'https://cdn.livesession.io/track.js';
 
-if (queryPermission('inject_script', url)) {
-  injectScript(url,   initLiveSession, data.gtmOnFailure, 'LiveSessionScriptInit');
-}
-
-
-
-    
+injectScript(url,data.gtmOnSuccess, data.gtmOnFailure, url);
 
 
 ___WEB_PERMISSIONS___
@@ -122,6 +114,45 @@ ___WEB_PERMISSIONS___
                     "boolean": true
                   }
                 ]
+              },
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "__ls.f"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
+                ]
               }
             ]
           }
@@ -139,7 +170,41 @@ ___WEB_PERMISSIONS___
         "publicId": "inject_script",
         "versionId": "1"
       },
-      "param": []
+      "param": [
+        {
+          "key": "urls",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 1,
+                "string": "https://cdn.livesession.io/track.js"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "logging",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "environments",
+          "value": {
+            "type": 1,
+            "string": "debug"
+          }
+        }
+      ]
     },
     "isRequired": true
   }
@@ -148,11 +213,42 @@ ___WEB_PERMISSIONS___
 
 ___TESTS___
 
-scenarios: []
+scenarios:
+- name: Init script
+  code: |-
+    const injectScript = require('injectScript');
+
+    const mockData = {
+      trackingId: '123'
+    };
+
+    mock('injectScript', function(url, onSuccess, onFailure) {
+        assertThat(url).isEqualTo('https://cdn.livesession.io/track.js');
+        onSuccess();
+    });
+
+    mock('createArgumentsQueue', function(name, namespace) {
+        return function(eventName, key) {
+          if(eventName === 'init'){
+             assertThat(key).isEqualTo('123');
+          }
+          if(eventName === 'newPageView'){
+             assertThat(key).isUndefined();
+          }
+        };
+    });
+
+    // Call runCode to run the template's code.
+    runCode(mockData);
+    assertApi('injectScript').wasCalled();
+    assertApi('createArgumentsQueue').wasCalledWith('__ls', '__ls.f');
+
+    // Verify that the tag finished successfully.
+    assertApi('gtmOnSuccess').wasCalled();
 
 
 ___NOTES___
 
-Created on 5.06.2020, 18:56:09
+Created on 8.06.2020, 17:31:20
 
 
