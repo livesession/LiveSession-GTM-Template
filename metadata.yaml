@@ -1,5 +1,5 @@
 homepage: "https://livesession.io/",
 documentation: "https://github.com/livesession/LiveSession-GTM-Template",
 versions:
-  - sha: 76c155a4857fbf739700e17cc15db7658c79357e
+  - sha: dfba7e786997eb41738852c2da067464730069aa
     changeNotes: Add LiveSession GTM Template
