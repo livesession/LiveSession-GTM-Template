@@ -40,19 +40,19 @@ ___TEMPLATE_PARAMETERS___
     "help": "Go to LiveSession Dashboard \u003e Settings \u003e Websites \u003e Tracking code. Copy code from TrackID label."
   },
   {
-    "type": "CHECKBOX",
-    "name": "keystrokes",
-    "checkboxText": "Keystrokes",
-    "simpleValueType": true,
-    "help": "Enable global keystroke tracking."
-  },
-  {
     "type": "TEXT",
     "name": "rootHostname",
-    "displayName": "Root hostname",
+    "displayName": "Root hostname (optional)",
     "simpleValueType": true,
     "help": "Set this to the highest-level hostname to record session across different subdomains on your site. (e.g. .your-domain.com)",
     "canBeEmptyString": true
+  },
+  {
+    "type": "CHECKBOX",
+    "name": "keystrokes",
+    "checkboxText": "Record keystrokes (optional)",
+    "simpleValueType": true,
+    "help": "Enable global keystroke tracking."
   }
 ]
 
@@ -294,6 +294,6 @@ scenarios:
 
 ___NOTES___
 
-Created on 9.06.2020, 13:50:15
+Created on 9.06.2020, 17:42:40
 
 
